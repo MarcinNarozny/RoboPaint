@@ -15,8 +15,8 @@ def main():
 
     ##### WELCOMING POPUP INIT #####
 
-    popup_window = Window("Szukam robota", POPUP_WINDOW_SIZE, "white")        
-    popup_window.warning('Tworzenie WEBSocket')
+    popup_window = Window("Connection", POPUP_WINDOW_SIZE, "white")        
+    popup_window.warning('Connecting')
 
     while True: ##### WELCOMING POPUP LOOP #####
 
@@ -34,7 +34,7 @@ def main():
 
     ##### DRAWING WINDOW INIT #####
 
-    main_window = Window("Tablica", MAIN_WINDOW_SIZE, "gray")
+    main_window = Window("RoboPaint", MAIN_WINDOW_SIZE, "gray")
 
     handler = PointHandler(idle_offset=25)
 
@@ -85,9 +85,6 @@ def main():
         if len(handler.point_buffer)!=0:
             if host.ready_to_send:
                 raw_points, points_to_send = handler.fetch(slider.z)
-                print("raw: ", raw_points)
-                print("sending: ", points_to_send)
-                #print("cooked: ", points_to_send)
                 sent_points_bin = host.send_data(points_to_send)
                 host.ready_to_send = False
             feedback = host.get_data()

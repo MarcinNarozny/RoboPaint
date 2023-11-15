@@ -5,8 +5,8 @@ import select
 config = open('utils/config.txt')
 
 class Host():
-    def __init__(self) -> None:
-        self.message = 'Próba połączenia' 
+    def __init__(self):
+        self.message = '' 
         self.ip = socket.gethostbyname(socket.gethostname())
         self.port = int(config.readline().strip(' PORT= \n'))
         self.ready_to_send = True
@@ -16,7 +16,7 @@ class Host():
         try:
             self.server.bind((self.ip, self.port))
         except socket.error:
-            self.message = 'Błędny lub zajęty port'
+            self.message = 'Invalid port'
             return False
 
         self.server.setblocking(False)
@@ -26,7 +26,7 @@ class Host():
             self.server, addr = self.server.accept()
             return True
         except socket.timeout:
-            self.message = 'Próba połączenia'
+            self.message = 'Waiting for robot'
 
 
     def send_data(self, data):
