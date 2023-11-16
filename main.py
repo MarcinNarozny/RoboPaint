@@ -79,22 +79,20 @@ def main():
                         handler.follow(canvas.end_draw(coursor_position), z)
                     Widget.active_widget = False
         
-        if handler.special_active and len(handler.point_buffer)==0:
+        if handler.special_active and not handler.point_buffer:
             handler.special_active = False
         
-        if len(handler.point_buffer)!=0:
+        if handler.point_buffer:
             if host.ready_to_send:
-                raw_points, points_to_send = handler.fetch(slider.z)
-                sent_points_bin = host.send_data(points_to_send)
+                unoptimized_points, optimized_points = handler.fetch(slider.z)
+                sent_points = host.send_data(optimized_points)
                 host.ready_to_send = False
-            feedback = host.get_data()
-            if len(points_to_send)==0:
+
+            if sent_points == host.get_data():
                 host.ready_to_send = True
-            elif feedback == sent_points_bin:
                 if not handler.special_active:
-                    canvas.update_drawings(raw_points)
-                host.ready_to_send = True
-        
+                    canvas.draw_progress(unoptimized_points)
+                      
         if not Run:
             break
 
