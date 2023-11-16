@@ -2,7 +2,7 @@ import socket
 import struct
 import select
 
-config = open('utils/config.txt')
+config = open('app/utils/config.txt')
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = int(config.readline().strip(' PORT= \n'))
@@ -17,7 +17,7 @@ class Host():
         try:
             self.server.bind((IP, PORT))
         except socket.error:
-            self.message = 'Invalid port'
+            self.message = 'Invalid network settings'
             return False
 
         self.server.setblocking(False)

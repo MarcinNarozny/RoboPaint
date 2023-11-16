@@ -1,8 +1,8 @@
 import pygame
 import sys
 import time
-from utils.gui import Widget, Button, Window, Slider, Canvas
-from utils.net import Host, PointHandler
+from .utils.gui import Widget, Button, Window, Slider, Canvas
+from .utils.net import Host, PointHandler
 
 pygame.init()
 

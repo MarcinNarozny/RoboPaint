@@ -2,10 +2,12 @@ import socket
 import struct
 import time
 
+config = open('app/utils/config.txt')
+
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 IP = socket.gethostbyname(socket.gethostname())
-PORT = 59152
+PORT = int(config.readline().strip(' PORT= \n'))
 
 print('WAITING FOR CONNECTION') 
 
