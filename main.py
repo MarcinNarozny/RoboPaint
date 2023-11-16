@@ -6,6 +6,7 @@ from utils.net import Host, PointHandler
 
 pygame.init()
 
+
 def main():
 
     POPUP_WINDOW_SIZE = (300, 100)
@@ -13,14 +14,14 @@ def main():
 
     host = Host()
 
-    ##### WELCOMING POPUP INIT #####
+    # WELCOMING POPUP INIT
 
-    popup_window = Window("Connection", POPUP_WINDOW_SIZE, "white")        
+    popup_window = Window("Connection", POPUP_WINDOW_SIZE, "white")
     popup_window.warning('Connecting')
 
-    while True: ##### WELCOMING POPUP LOOP #####
+    while True:  # WELCOMING POPUP LOOP
 
-        for event in pygame.event.get(): 
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 host.server.close()
@@ -28,35 +29,38 @@ def main():
 
         if host.connect():
             pygame.display.quit()
-            break 
+            break
         else:
             popup_window.warning(host.message)
 
-    ##### DRAWING WINDOW INIT #####
+    # DRAWING WINDOW INIT
 
     main_window = Window("RoboPaint", MAIN_WINDOW_SIZE, "gray")
 
     handler = PointHandler(idle_offset=25)
 
-    slider = Slider(main_window.window, 1278, 280, 48, 250)
+    slider = Slider(main_window.window, x=1278, y=280, width=48, height=250)
 
     canvas = Canvas(main_window.window, 8, 8, 1244, 564)
 
-    z=0
+    z = 0
 
-    test_button = Button(main_window.window, 1267, 8, 70, 40, "Test", lambda: handler.test_canvas(canvas, z))
+    test_button = Button(main_window.window, 1267, 8, 70,
+                         40, "Test", lambda: handler.test_canvas(canvas, z))
 
-    move_button = Button(main_window.window, 1267, 88, 70, 40, "Move", lambda: handler.move_robot(canvas, z, host))
+    move_button = Button(main_window.window, 1267, 88, 70,
+                         40, "Move", lambda: handler.move_robot(canvas, z, host))
 
-    clear_button = Button(main_window.window, 1267, 168, 70, 40, "Clear", lambda: handler.clear_canvas(canvas))
+    clear_button = Button(main_window.window, 1267, 168,
+                          70, 40, "Clear", lambda: handler.clear_canvas(canvas))
 
     Run = True
 
-    while Run:   ##### DRAWING WINDOW LOOP #####
-        
+    while Run:  # DRAWING WINDOW LOOP
+
         for event in pygame.event.get():
-            
-            if event.type==pygame.QUIT:
+
+            if event.type == pygame.QUIT:
                 pygame.display.quit()
                 handler.move_robot(canvas, z, host)
                 Run = False
@@ -65,7 +69,7 @@ def main():
             coursor_position = pygame.mouse.get_pos()
 
             if pygame.mouse.get_pressed()[0]:
-                
+
                 test_button.click(coursor_position)
                 move_button.click(coursor_position)
                 clear_button.click(coursor_position)
@@ -78,10 +82,10 @@ def main():
                     if Widget.active_widget == canvas:
                         handler.follow(canvas.end_draw(coursor_position), z)
                     Widget.active_widget = False
-        
+
         if handler.special_active and not handler.point_buffer:
             handler.special_active = False
-        
+
         if handler.point_buffer:
             if host.ready_to_send:
                 unoptimized_points, optimized_points = handler.fetch(slider.z)
@@ -92,7 +96,7 @@ def main():
                 host.ready_to_send = True
                 if not handler.special_active:
                     canvas.draw_progress(unoptimized_points)
-                      
+
         if not Run:
             break
 
@@ -100,7 +104,7 @@ def main():
 
     host.server.close()
 
-    ##### EXIT POPUP #####
+    # EXIT POPUP
 
     popup_window = Window("Zamykam program", POPUP_WINDOW_SIZE, "white")
     popup_window.warning('Wyłączanie...')
@@ -109,5 +113,6 @@ def main():
     pygame.quit()
     sys.exit()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()

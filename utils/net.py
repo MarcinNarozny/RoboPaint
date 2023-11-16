@@ -108,7 +108,9 @@ class PointHandler:
                                                batch[0][2] + z_tune))          #z
                         del batch[:3]
                     else:
-                        points_to_send.append((last_point[0], last_point[1], last_point[2] + z_tune))
+                        points_to_send.append((last_point[0],
+                                               last_point[1],
+                                               last_point[2] + z_tune))
                 del self.point_buffer[:batch_len]
 
                 return raw_points, points_to_send
